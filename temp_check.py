@@ -2,7 +2,7 @@ def temp_check(low):
     valid = False
     while not valid:
         try:
-            response = float(input("Entera number: "))
+            response = float(input("Enter a number: "))
 
             if response < low:
                 print("Too Cold!")
@@ -12,4 +12,11 @@ def temp_check(low):
         except ValueError:
             print("Please enter a number")
 
-# main rountine
+# main Routine
+# run this code twice (for two valid responses in test plan)
+low = -273
+number = temp_check(low)
+print("y0u chose {}".format(number))
+
+number = temp_check(-459)
+print("You chose {}".format(number))
