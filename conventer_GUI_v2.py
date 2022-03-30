@@ -43,12 +43,14 @@ class Converter:
 
         self.to_c_button = Button(self.conversion_buttons_frame,
                                   text="To Centigrade", font="Arial 10 bold",
-                                  bg="yellow", padx=10, pady=10)
+                                  bg="yellow", padx=10, pady=10,
+                                  command=lambda: self.temp_convert(-459))
         self.to_c_button.grid(row=0, column=0)
 
         self.to_f_button = Button(self.conversion_buttons_frame,
                                   text="To Fahrenheit", font="arial 10 bold",
-                                  bg="orange", padx=10, pady=10)
+                                  bg="orange", padx=10, pady=10,
+                                  command=lambda: self.temp_convert(-273))
         self.to_f_button.grid(row=0, column=1)
 
         # Answers label (row 4)
@@ -69,7 +71,8 @@ class Converter:
                                   text="Help", width=5)
         self.help_button.grid(row=0, column=1)
 
-
+    def temp_convert(self, to):
+        print(to)
 
 
 
