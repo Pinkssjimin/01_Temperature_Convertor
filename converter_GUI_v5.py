@@ -86,20 +86,49 @@ class Converter:
             # check and convert to Fahrenheit
             if low == -273 and to_convert >= low:
                 fahrenheit = (to_convert * 9/5) + 32
-                to_convert = self.rouund_it(to_convert)
+                # round what the user inputed
+                to_convert = self.round_it(to_convert)
+                # round what I converted
                 fahrenheit = self.round_it(fahrenheit)
                 answer = "{} degrees C is {} degrees F".format(to_convert, fahrenheit)
 
             # check and convert to centigrade
-            
+            elif low == -459 and to_convert >= low:
+                celsius = (to_convert - 32) * 5/9
+                to_convert = self.round_it(to_convert)
+                celsius = self.round_it(celsius)
+                answer = "{} degrees F is {} degrees C".format(to_convert, celsius)
+
+            else:
+                # input is invalid (tpp cold)!!
+                answer = "Too Cold!"
+                has_errors = "yes"
+
+            # Display answer
+            if has_errors == "no":
+                self.converted_label.configure(text=answer, fg="blue")
+                self.to_convert_entry.configure(bg="white")
+            else:
+                self.converted_label.configure(text=answer, fg="red")
+                self.to_convert_entry.configure(bg=error)
+            # add answers to list for history
+
 
         except ValueError:
-            # changes the text in row 4 (the purple text)
-            self.converted_label.configure(text="Enter a number!", fg="red")
-            # changes the colour of the entry box when invalid input
+            self.converted_label.configure(text="Enter a number!!", fg="red")
             self.to_convert_entry.configure(bg=error)
+            ## changes the text in row 4 (the purple text)
+            #self.converted_label.configure(text="Enter a number!", fg="red")
+           ## changes the colour of the entry box when invalid input
+            #self.to_convert_entry.configure(bg=error)
 
+    def round_it(self, to_round):
+        if to_round % 1 == 0:
+            rounded = int(to_round)
+        else:
+            rounded = round(to_round, 1)
 
+        return rounded
 
 
 if __name__== "__main__":
