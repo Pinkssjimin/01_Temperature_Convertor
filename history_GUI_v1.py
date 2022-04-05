@@ -20,7 +20,6 @@ class Convertor:
                               '2 degrees F is -16.7 degrees C',
                               '234 degrees F is 112.2 degrees C',
                               '10 degrees F is -12.2 degrees C']
-]
 
         # converter Main Screen GUI...
         self.converter_frame = Frame(width=600, height=600, bg=background_colour,
@@ -72,17 +71,30 @@ class history:
                                        "calculations. please use the export "
                                        "button to create a text file of all "
                                        "your calculations for this session",
-                               justify=LEFT, width=40, bg=background, wrap=250)
+                                  font="arial 10 italic",
+                                  justify=LEFT, width=40, bg=background, wrap=250,
+                                  padx=10, pady=10, fg="maroon")
         self.history_text.grid(row=1)
 
-        #Dismiss button (row 2)
-        self.dismiss_btn = Button(self.history_frame, text="Dismiss",
+        # history output goes here (row 2)
+
+        # export / dismiss buttons frame (row 3)
+        self.export_dismiss_frame = Frame(self.history_frame)
+        self.export_dismiss_frame.grid(row=3, pady=10)
+
+        # export button
+        self.export_button = Button(self.export_dismiss_frame, text="Export",
+                                    font="Arial 12 bold")
+        self.export_button.grid(row=0, column=0)
+
+        # Dismiss button (row 2)
+        self.dismiss_btn = Button(self.export_dismiss_frame, text="Dismiss",
                                   width=10, bg="orange", font="arial 10 bold",
                                   command=partial(self.close_history, partner))
-        self.dismiss_btn.grid(row=2, pady=10)
+        self.dismiss_btn.grid(row=0, column=1)
 
     def close_history(self, partner):
-        #Put history button back to normal
+        # Put history button back to normal
         partner.history_button.config(state=NORMAL)
         self.history_box.destroy()
 
