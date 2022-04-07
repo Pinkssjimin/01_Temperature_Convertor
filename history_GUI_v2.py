@@ -35,6 +35,9 @@ class Convertor:
                                      command=lambda: self.history(self.all_calc_list))
         self.history_button.grid(row=1)
 
+        if len(self.all_calc_list) == 0:
+            self.history_button.config(state=DISABLED)
+
     def history(self, calc_history):
         History(self, calc_history)
 
