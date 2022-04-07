@@ -1,5 +1,6 @@
 from tkinter import *
 from functools import partial  # To prevent unwanted windows
+
 import random
 
 
@@ -9,7 +10,9 @@ class Converter:
         # Formatting variables
         background_color = "light blue"
 
+        # initialise list to hold calculation history
         self.all_calc_list = []
+
         # converter frame
         self.converter_frame = Frame(bg=background_color,
                                      pady=10)
@@ -64,9 +67,13 @@ class Converter:
         self.hist_help_frame = Frame(self.converter_frame)
         self.hist_help_frame.grid(row=5, pady=10)
 
-        self.calc_hist_button = Button(self.hist_help_frame, font="Arial 12 bold",
-                                       text="Calculation History", width=15)
-        self.calc_hist_button.grid(row=0, column=0)
+        self.history_button = Button(self.hist_help_frame, font="Arial 12 bold",
+                                     text="Calculation History", width=15,
+                                     command=lambda: self.history(self.all_calc_list))
+        self.history_button.grid(row=0, column=0)
+
+        if len(self.all_calc_list) == 0:
+            self.history_button.config(state=DISABLED)
 
         self.help_button = Button(self.hist_help_frame, font="Arial 12 bold",
                                   text="Help", width=5)
@@ -101,7 +108,7 @@ class Converter:
                 answer = "{} degrees F is {} degrees C".format(to_convert, celsius)
 
             else:
-                # input is invalid (tpp cold)!!
+                # input is invalid (too cold)!!
                 answer = "Too Cold!"
                 has_errors = "yes"
 
@@ -112,16 +119,18 @@ class Converter:
             else:
                 self.converted_label.configure(text=answer, fg="red")
                 self.to_convert_entry.configure(bg=error)
+
             # add answers to list for history
+            if has_errors != "yes":
+                self.all_calc_list.append(answer)
+                # print(self.all_calc_list)
+                self.history_button.config(state=NORMAL)
+
 
 
         except ValueError:
             self.converted_label.configure(text="Enter a number!!", fg="red")
             self.to_convert_entry.configure(bg=error)
-            ## changes the text in row 4 (the purple text)
-            #self.converted_label.configure(text="Enter a number!", fg="red")
-           ## changes the colour of the entry box when invalid input
-            #self.to_convert_entry.configure(bg=error)
 
     def round_it(self, to_round):
         if to_round % 1 == 0:
@@ -146,9 +155,10 @@ class History:
         #Set up child window (ie: history box)
         self.history_box = Toplevel()
 
-        # if users press cross at top, coses history and 'releases' history button
+        # if users press cross at top, closes history and 'releases' history button
         self.history_box.protocol('WM_DELETE_WINDOW',
                                   partial(self.close_history, partner))
+
         #set uo GUI Frame
         self.history_frame = Frame(self.history_box, width=300, bg=background)
         self.history_frame.grid()
@@ -211,10 +221,9 @@ class History:
         self.history_box.destroy()
 
 
-
-if __name__== "__main__":
+# main routine
+if __name__ == "__main__":
     root = Tk()
-    root.title("Temperatrue Converter")
+    root.title("Temperature Convertor")
     something = Converter()
     root.mainloop()
-
