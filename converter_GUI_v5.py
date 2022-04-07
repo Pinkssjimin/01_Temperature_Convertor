@@ -9,6 +9,7 @@ class Converter:
         # Formatting variables
         background_color = "light blue"
 
+
         # converter frame
         self.converter_frame = Frame(bg=background_color,
                                      pady=10)
