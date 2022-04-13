@@ -72,6 +72,7 @@ class Converter:
                                      command=lambda: self.history(self.all_calc_list))
         self.history_button.grid(row=0, column=0)
 
+        # if nothing is calculated the history button is disabled
         if len(self.all_calc_list) == 0:
             self.history_button.config(state=DISABLED)
 
