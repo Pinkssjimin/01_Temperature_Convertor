@@ -1,8 +1,7 @@
 from tkinter import *
 from functools import partial  # To prevent unwanted windows
-
 import random
-
+import re
 
 class Convertor:
     def __init__(self):
@@ -128,10 +127,10 @@ class Export:
 
         background = "orange"
 
-        #disable export button
+        # disable export button
         partner.export_button.config(state=DISABLED)
 
-        #Set up child window (ie: export box)
+        # Set up child window (ie: export box)
         self.export_box = Toplevel()
 
         # if users press cross at top, closes export and 'releases' export button
@@ -149,10 +148,10 @@ class Export:
 
         #export text (label, row 1)
         self.export_text = Label(self.export_frame,
-                                 text="Enter a filename in the"
-                                      "box below an press the"
-                                      "Save button to save your"
-                                      "calculation history to"
+                                 text="Enter a filename in the "
+                                      "box below an press the "
+                                      "Save button to save your "
+                                      "calculation history to "
                                       "text file.",
                                  justify=LEFT, width=40, bg=background, wrap=250)
         self.export_text.grid(row=1)
@@ -183,9 +182,43 @@ class Export:
 
         # save and cancel buttons (row 0 of save_cancel_frame)
         self.save_button = Button(self.save_cancel_frame, text="Save",
-                                  command=parial(lambda: self.save_history(partner)))
+                                  command=partial(lambda: self.save_history(partner, calc_history)))
         self.save_button.grid(row=0, column=0)
-        # COntinue HEReeeeeeeeeeeeeeeeeeee
+
+        self.cancel_button = Button(self.save_cancel_frame, text="Cancel",
+                                    command=partial(self.close_export, partner))
+        self.cancel_button.grid(row=0, column=1)
+
+    def save_history(self, partner, calc_history):
+
+        # Regular expression to check filename is valid
+        has_error = "no"
+        valid_char = "[A-Za-z0-9_]"
+
+        filename = self.filename_entry.get()
+        print(filename)
+
+        for letter in filename:
+            if re.match(valid_char, letter):
+                continue
+
+            # when space is entered its an error
+            elif letter == " ":
+                problem = "(no spaces allowed)"
+            else:
+                problem = ("(no {}'s allowed)".format(letter))
+            has_error = "yes"
+        # when nothing is entered it's a error
+        if filename == "":
+            problem = "can't be blank"
+            has_error = "yes"
+        # print the problem message when there's an error
+        if has_error == "yes":
+            print("Invalid filename - {}".format(problem))
+        else:
+            print("you entered a valid filename")
+
+
 
         #Dismiss button (row 2)
         self.dismiss_btn = Button(self.export_frame, text="Dismiss",
